@@ -1,0 +1,41 @@
+import Sound.Tidal.MIDI.Context
+
+displayOutputDevices >>= putStrLn
+
+devices <- midiDevices
+
+m1 <- midiStream devices "Scarlett 2i4 USB MIDI 1" 1 synthController 
+
+m2 <- midiStream devices "Scarlett 2i4 USB MIDI 1" 1 synthController 
+
+m3 <- midiStream devices "Scarlett 2i4 USB MIDI 1" 1 synthController 
+
+m4 <- midiStream devices "Scarlett 2i4 USB MIDI 1" 1 synthController 
+
+m5 <- midiStream devices "Scarlett 2i4 USB MIDI 1" 1 synthController 
+
+cps 1
+
+m1 silence
+m2 silence
+m3 silence
+m4 silence
+m5 silence
+
+m1 $ n "-2 -2"
+
+m2 $ n "[~ -3 ~ -3, ~ ~ ~ ~ ~ -6 ~ ~]" # dur "0.1 0.05"
+
+m3 $ n "[~ ~ ~ -1 ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~]" 
+
+m4 $ n "~ -7" # dur "0.89"
+
+m5 $ slow 2 $ n "~ 6 ~ ~ 6 ~ ~ 6 ~ ~ 6 ~ ~ 6 ~ ~"
+
+hush
+
+m2 $ slow 2 $ n "~ ~ -8 ~ ~ -8 ~ ~ -8 ~ ~ ~ ~ ~ ~ -8" # dur "0.2"
+
+m3 $ slow 2 $  n "-4 ~ ~ -4 ~" # dur "0.3"
+
+m4 $ slow 1.5 $ n "-3 -3 -3 -3" # dur "0.8 0.1 0.5"
