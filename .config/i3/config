@@ -98,6 +98,7 @@ set $w1 "1: term"
 set $w2 "2: browser"
 set $w3 "3: bitwig"
 set $w4 "4: misc"
+set $w5 "5: calendar"
 
 
 
@@ -131,7 +132,6 @@ bindsym $mod+Shift+r reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+p restart
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+period exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -160,29 +160,46 @@ mode "resize" {
 bindsym $mod+p mode "resize"
 
 #cmus control mode
+bindsym $mod+c mode "cmus-control"
 mode "cmus-control" {
 	bindsym c exec "cmus-remote -C player-pause"
 	bindsym x exec "cmus-remote -C player-play"
 	bindsym n exec "cmus-remote -C player-next"
+	bindsym t exec "cmus-remote -C player-prev"
 	bindsym Return mode "default"
 	bindsym Escape mode "default"
 	bindsym $mod+c mode "default"
 }
 
-bindsym $mod+c mode "cmus-control"
+#system lock, shutdown etc mode
+bindsym $mod+Shift+period mode "system"
+mode "system" {
+	bindsym h exec i3lock -c 000000 && systemctl hibernate, mode "default"
+	bindsym l exec i3lock -c 000000 && systemctl suspend, mode "default"
+	bindsym period exec "i3-msg exit"
+	bindsym Return mode "default"
+	bindsym Escape mode "default"
+	bindsym $mod+c mode "default"
+}
+	
+
+
+#screen recording
+bindsym $mod+Shift+s exec recordscreen
 
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-	status_command i3status
+	#font pango:monospace 12
+	#font pango: Terminus 13
+	font pango: courier 15
+	status_command SCRIPT_DIR=/home/ada/.config/i3blocks i3blocks 
 		tray_output primary
-		separator_symbol " < "
-		font pango:monospace 12
 		colors {
-			background #514E68
+			background #413E48
 				statusline #FAB6FF
-				separator  #F803E3
+				separator  #983343
 
 				focused_workspace  #4C7899 #285577 #FFFFFF
 				active_workspace   #333333 #222222 #FFFFFF
@@ -213,13 +230,13 @@ assign [class="qjackctl"] number $w4
 assign [class="Bitwig Studio*"] number $w3
 
 #opera always in 2nd
-assign [class="Opera"] number $w2
+assign [class="Firefox"] number $w2
 
 #terminal
 #assign [class="xfce-terminal"] number $w1
 
 #thunar
-assign [class="Thunar"] number $w1
+#assign [class="Thunar"] number $w1
 
 #xpad 
 bindsym F12 exec xpad -t
@@ -228,6 +245,13 @@ for_window [class="xpad"] floating enable
 
 for_window [class="Thunar"] popup_during_fullscreen smart
 for_window [class="thunar"] popup_during_fullscreen smart
+popup_during_fullscreen smart
+
+#cmus
+for_window [title="cmus v2"] move to workspace number $w4
+
+#kazam
+for_window [class="kazam"] floating enable
 
 #pd-l2ork
 assign [title="purr-data"] number $w4
@@ -237,6 +261,9 @@ for_window [title="iemgui"] floating enable
 #for_window [class="purr-data"] floating enable
 #for_window [window_role="app"] floating enable
 #for_window [id="pd-l2ork"] floating enable
+#
+#diablo ii
+#for_window [class="Wine"] floating enable
 
 #cmus
 #assign [title="cmus*"] number $w4 
@@ -252,11 +279,12 @@ bindsym $mod+m exec /home/ada/Scripts/ifWindowExists
 #-------------------startup---------------------------
 
 exec --no-startup-id xpad
-exec opera
+exec firefox
 exec xfce4-terminal
-exec i3-msg 'workspace 4: misc'
-for_window [title="cmus"] move to workspace number $w4
-exec "xfce4-terminal -e cmus"
+exec qjackctl
+#exec "xfce4-terminal -e cmus"
+exec --no-startup-id xss-lock -- ~/.config/i3/lock.sh
+
 #assign [class="Xfce4-terminal"] number $w4
 #exec_always 'i3-msg workspace 4: misc; xfce4-terminal -e cmus'
 #exec_always i3-msg workspace 4: misc; xfce4-terminal -e cmus

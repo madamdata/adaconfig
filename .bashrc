@@ -116,11 +116,46 @@ if ! shopt -oq posix; then
   fi
 fi
 
+#editor
+export EDITOR='vim'
+
 #aliases
 alias am='alsamixer'
 alias i3c='vim /home/ada/.config/i3/config' 
 alias i3s='vim /home/ada/.config/i3status/config' 
 alias cmuslaunch='xfce4-terminal -e cmus'
+alias mm='thunar . &'
+
+#TASKWARRIOR aliases
+#alias tt='task list'
+alias ta='task add'
+alias shop="task add tag:sl project:'Shopping List'"
+alias shoplist="task list project:'Shopping List'"
+alias itb="cd ~/.wine/drive_c/GOG\ Games/Into\ the\ Breach && wine Breach.exe"
+alias emailshoplist="echo -e \"Subject:Shopping List \"$(date +%d\ %b\ %H%M)\"\n\"\"$(shoplist)\" | msmtp forks.andhope@gmail.com"
+#alias itb="cd ~/.wine/drive_c/GOG\ Games/Into\ the\ Breach"
 
 #C-s disable
 stty -ixon
+
+
+#functions
+function tt () { 
+	if [ -z $1 ]
+	then
+		task -sl list
+	else
+		task list project:$1
+	 fi
+}
+
+function emailtask () {
+	if [ -z $1 ] 
+	then
+		echo -e "Subject:Tasklist:\n""$(task -sl list)" | msmtp forks.andhope@gmail.com
+	else
+		echo -e "Subject:Tasklist:Project $1\n""$(task project:$1 list)" | msmtp forks.andhope@gmail.com 
+	fi
+}
+
+

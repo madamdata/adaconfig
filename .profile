@@ -29,7 +29,9 @@ fi
 # path
 
 export PATH="$HOME/Scripts:$PATH"
+export PATH="$HOME/.dropbox-dist:$PATH"
+export PATH="$HOME/miscprograms:$PATH"
 
 /usr/bin/setxkbmap -option "caps:swapescape"
 xset r rate 200 35
-xinput set-prop 12 "libinput Accel Speed" 0.5
+xinput set-prop "SynPS/2 Synaptics TouchPad" "libinput Accel Speed" 0.5
