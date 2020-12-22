@@ -119,6 +119,9 @@ fi
 #editor
 export EDITOR='vim'
 
+#Date String
+export CURRENTDATE=$(date +%d\ %b\ %H:%M)
+
 #aliases
 alias am='alsamixer'
 alias i3c='vim /home/ada/.config/i3/config' 
@@ -132,7 +135,6 @@ alias ta='task add'
 alias shop="task add tag:sl project:'Shopping List'"
 alias shoplist="task list project:'Shopping List'"
 alias itb="cd ~/.wine/drive_c/GOG\ Games/Into\ the\ Breach && wine Breach.exe"
-alias emailshoplist="echo -e \"Subject:Shopping List \"$(date +%d\ %b\ %H%M)\"\n\"\"$(shoplist)\" | msmtp forks.andhope@gmail.com"
 #alias itb="cd ~/.wine/drive_c/GOG\ Games/Into\ the\ Breach"
 
 #C-s disable
@@ -147,6 +149,11 @@ function tt () {
 	else
 		task list project:$1
 	 fi
+}
+
+function emailshoplist () {
+	echo "testing1"
+	echo -e "Subject:Shopping List ""$(date +%d\ %b\ %H:%M)\n""$(shoplist)" | msmtp forks.andhope@gmail.com
 }
 
 function emailtask () {
